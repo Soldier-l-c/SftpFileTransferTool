@@ -1,7 +1,6 @@
 #pragma once
-#include <curl/curl.h>
-
-
+#include "./3rd/curl/curl.h"
+//#include <curl/curl.h>
 class ICurlBase
 {
 public:

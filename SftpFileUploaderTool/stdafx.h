@@ -17,10 +17,12 @@
 #include "Util.h"
 #include "ICurlBase.h"
 #include "ICurlHandleFile.h"
-//#ifdef DEBUG
-//#pragma comment(lib,"/3rd/curl/lib/libcurld.lib")
-//#else 
-//#pragma comment(lib,"./3rd/curl/lib/libcurl.lib")
-//#pragma comment(lib,"./3rd/lib/libeay32.lib")
-//#pragma comment(lib,"./3rd/lib/ssleay32.lib")
-//#endif // DEBUG
+#ifdef DEBUG
+#pragma comment(lib,"/3rd/curl/lib/libcurld.lib")
+#else 
+#pragma comment(lib,"./3rd/curl/lib/libcurl.lib")
+#pragma comment(lib,"./3rd/lib/libssl.lib")
+#pragma comment(lib,"./3rd/lib/libcrypto.lib")
+#pragma comment(lib, "./3rd/lib/zlib.lib")
+#pragma comment(lib, "./3rd/lib/libssh2.lib")
+#endif // DEBUG
