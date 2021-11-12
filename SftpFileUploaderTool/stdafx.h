@@ -3,9 +3,9 @@
 #include <vector>
 #include <string>
 #include<mutex>
+#include <map>
 
-#include "ICurlBase.h"
-#include "ICurlHandleFile.h"
+
 #define HISTORY_FILE "sftp_history.his"
 
 #define INFO_ 20
@@ -14,6 +14,9 @@
 #define COUT_ERROR std::cout<<UtilBase::UtilTime::GetFormatTime()<<"  "<<ERROR_ << "  "
 #define COUT_EMPTY_LINE std::cout << std::endl;
 
+#include "Util.h"
+#include "ICurlBase.h"
+#include "ICurlHandleFile.h"
 //#ifdef DEBUG
 //#pragma comment(lib,"/3rd/curl/lib/libcurld.lib")
 //#else 

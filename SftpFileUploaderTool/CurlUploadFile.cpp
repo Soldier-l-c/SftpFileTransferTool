@@ -18,21 +18,29 @@ using MYRESULT = enum
 
 void CurlUploadFile::run()
 {
+	__EnterFileTransfer();
+	__CinNeedInfo();
+
 	if (!__CheckIsReday())return;
+
+	COUT_INFO << "Start Upload file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << std::endl;
+
 	auto res = __FileUpload();
+
+	COUT_EMPTY_LINE;
 	COUT_INFO << "Upload File res:[" << res << "]" << std::endl;
 }
 
 int64_t hasUpedSize;
 int64_t totalSize;
-int read_callback (void* ptr, size_t size, size_t nmemb, void* stream)
+int read_callback(void* ptr, size_t size, size_t nmemb, void* stream)
 {
 	curl_off_t nread;
 	size_t retcode = fread(ptr, size, nmemb, (FILE*)(stream));
 	nread = (curl_off_t)retcode;
 	hasUpedSize += nread;
-	printf("\33[2K\r");
-	std::cout << hasUpedSize << "/" << totalSize;
+
+	ICurlHandleFile::PrintProgress(hasUpedSize, totalSize);
 	return retcode;
 };
 
@@ -66,7 +74,8 @@ int32_t CurlUploadFile::__FileUpload()
 		return MYRESULT::OPEN_FILE_ERROR;
 	}
 
-	if (curl) {
+	if (curl) 
+	{
 		curl_easy_setopt(curl, CURLOPT_URL, (m_strAddress + "/" + m_strToFile).c_str());		//设置sftp的路径
 		curl_easy_setopt(curl, CURLOPT_USERPWD, userPwd.c_str());	//设置用户名和密码	
 		curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);//设置回调函数
@@ -75,7 +84,6 @@ int32_t CurlUploadFile::__FileUpload()
 		curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);                 //上传
 		curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, iFileSize);//设置文件大小
 		curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 120);
-		//curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
 		//获取curl的执行结果
 		res = curl_easy_perform(curl);
@@ -92,7 +100,7 @@ int32_t CurlUploadFile::__FileUpload()
 		myres = MYRESULT::UPLOAD_FILE_ERROR;
 	}
 
-	//关闭文件及curl清理
+	//关闭文件
 	fclose(pSendFile);
 	return myres;
 }

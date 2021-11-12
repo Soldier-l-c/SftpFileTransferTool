@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "util.h"
-#define SINGLE_MUTEX L"Global\\{DE45BDFF-B5D1-4B65-BA78-09EC77CA57A9}"
+#define SINGLE_MUTEX L"Global\\{DE45BDFF-B5D1-4B65-BA78-09EC77CA57A9}_SP"
 
 std::string UtilBase::UtilTime::GetFormatTime()
 {

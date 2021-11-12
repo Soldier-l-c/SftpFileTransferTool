@@ -24,6 +24,7 @@
     <ProjectGuid>{a125874d-e32e-4722-af33-a765034bedd0}</ProjectGuid>
     <RootNamespace>SftpFileUploaderTool</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SftpFileTransferTool</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

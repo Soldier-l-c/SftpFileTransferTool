@@ -21,7 +21,7 @@ void completionHook(char const* prefix, linenoiseCompletions* lc)
 void CoutTitle()
 {
 	std::cout << "*************************************************************" << std::endl;
-	std::cout << "Sftp File Uploader" << std::endl;
+	std::cout << "Sftp File Transfer" << std::endl;
 	std::cout << "https://www.hkpyy.top" << std::endl;
 	std::cout << "*************************************************************" << std::endl;
 	std::cout << std::endl;
@@ -32,6 +32,13 @@ void InitLinenoise()
 	linenoiseInstallWindowChangeHandler();
 	linenoiseHistoryLoad(HISTORY_FILE);
 	linenoiseSetCompletionCallback(completionHook);
+}
+
+void UploadTest()
+{
+	auto sptr = std::shared_ptr<ICurlHandleFile>(new CurlUploadFile());
+	sptr->init();
+	sptr->run();
 }
 
 void ProcessCmdline(const std::string& line)
@@ -48,19 +55,11 @@ void ProcessCmdline(const std::string& line)
 	{
 		exit(0);
 	}
+	else if ("/upload" == line)
+	{
+		UploadTest();
+	}
 	return;
-}
-
-void UploadTest()
-{
-	auto sptr = std::shared_ptr<ICurlHandleFile>(new CurlUploadFile());
-	sptr->init();
-	sptr->SetAddress("sftp://www.hkpyy.top");
-	sptr->SetUser("user");
-	sptr->SetPassword("pwd");
-	sptr->SetFromFile("main.cpp");
-	sptr->SetToFile("upload_file_test/main.cpp");
-	sptr->run();
 }
 
 void Start()
