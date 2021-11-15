@@ -1,6 +1,20 @@
 #pragma once
 #include "ICurlBase.h"
 #include "3rd/linenoise/linenoise.h"
+using MYRESULT = enum
+{
+	SECCESS = 0,
+	OPEN_FILE_ERROR,
+	GET_LOCALIP_ERROR,
+	WSASTARTUP_ERROR,
+	CREATE_PROCESS_ERROR,
+	ZIP_FILE_ERROR,
+	GET_SFTP_INFO_ERROR,
+	UPLOAD_FILE_ERROR,
+	INIT_CURL_ERROR,
+	CREATE_ZIP_HAND_ERROR
+};
+
 class ICurlHandleFile :public ICurlBase
 {
 public:
@@ -14,6 +28,8 @@ public:
 public:
 	static void PrintProgress(const int64_t& curentSize, const int64_t& totalSize)
 	{
+		if (totalSize <= 0 || curentSize < 0)return;
+
 		static auto lastPercent{ 0 };
 		double prograss = (double)(curentSize) / (double)(totalSize);
 		auto precent = (int32_t)(100*prograss);
@@ -21,13 +37,13 @@ public:
 
 		if (lastPercent != 0 && (precent == lastPercent))return;
 
-		std::cout<<"\33[2K\r";
+		LOG <<"\33[2K\r";
 
-		std::cout << "Prograss:[";
-		while (i--)std::cout << ">";
+		LOG << "Prograss:[";
+		while (i-- > 0)LOG << ">";
 		i = 100 - precent;
-		while (i--)std::cout << " ";
-		std::cout << "] " << precent << "%100";
+		while (i-- > 0)LOG << " ";
+		LOG << "] " << precent << "%100";
 
 		lastPercent = precent;
 	}

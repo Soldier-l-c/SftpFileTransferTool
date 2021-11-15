@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "./3rd/linenoise/linenoise.h"
 #include "CurlUploadFile.h"
+#include "CurlDownloadFile.h"
 static const std::vector<std::string>examples{ "clear", "user", "password", "exit" , "hostname"};
 
 void completionHook(char const* prefix, linenoiseCompletions* lc) 
 {
 	size_t i;
-	std::cout << std::endl;
-	std::cout << prefix << std::endl;
+	COUT_EMPTY_LINE;
+	LOG << prefix << END_OF_LINE;
 	for (const auto& iter: examples)
 	{
 		if (0  == iter.find(prefix))
@@ -20,11 +21,11 @@ void completionHook(char const* prefix, linenoiseCompletions* lc)
 
 void CoutTitle()
 {
-	std::cout << "*************************************************************" << std::endl;
-	std::cout << "Sftp File Transfer" << std::endl;
-	std::cout << "https://www.hkpyy.top" << std::endl;
-	std::cout << "*************************************************************" << std::endl;
-	std::cout << std::endl;
+	LOG << "*************************************************************" << END_OF_LINE;
+	LOG << "Sftp File Transfer" << END_OF_LINE;
+	LOG << "https://www.hkpyy.top" << END_OF_LINE;
+	LOG << "*************************************************************" << END_OF_LINE;
+	COUT_EMPTY_LINE;
 }
 
 void InitLinenoise()
@@ -34,11 +35,20 @@ void InitLinenoise()
 	linenoiseSetCompletionCallback(completionHook);
 }
 
-void UploadTest()
+void TransferTest(std::shared_ptr<ICurlHandleFile>&& sptr)
 {
-	auto sptr = std::shared_ptr<ICurlHandleFile>(new CurlUploadFile());
 	sptr->init();
 	sptr->run();
+}
+
+void DownloadTest()
+{
+	TransferTest(std::shared_ptr<ICurlHandleFile>(new CurlDownloadFile()));
+}
+
+void UploadTest()
+{
+	TransferTest(std::shared_ptr<ICurlHandleFile>(new CurlUploadFile()));
 }
 
 void ProcessCmdline(const std::string& line)
@@ -59,6 +69,10 @@ void ProcessCmdline(const std::string& line)
 	{
 		UploadTest();
 	}
+	else if ("/download" == line)
+	{
+		DownloadTest();
+	}
 	return;
 }
 
@@ -70,6 +84,7 @@ void Start()
 		if (l[0] != '\0' && l[0] != '/') 
 		{
 			printf("echo: '%s'\n", l);
+			LOG << "echo:" << l << END_OF_LINE;
 			free(l);
 			continue;
 		}

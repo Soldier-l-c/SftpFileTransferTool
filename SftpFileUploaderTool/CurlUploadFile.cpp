@@ -1,34 +1,21 @@
 #include "stdafx.h"
 #include "CurlUploadFile.h"
 #include "Util.h"
-using MYRESULT = enum
-{
-	SECCESS = 0,
-	OPEN_FILE_ERROR,
-	GET_LOCALIP_ERROR,
-	WSASTARTUP_ERROR,
-	CREATE_PROCESS_ERROR,
-	ZIP_FILE_ERROR,
-	GET_SFTP_INFO_ERROR,
-	UPLOAD_FILE_ERROR,
-	INIT_CURL_ERROR,
-	CREATE_ZIP_HAND_ERROR
-};
-
 
 void CurlUploadFile::run()
 {
+	m_strTransType = "Uploader";
 	__EnterFileTransfer();
 	__CinNeedInfo();
 
 	if (!__CheckIsReday())return;
 
-	COUT_INFO << "Start Upload file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << std::endl;
+	COUT_INFO << "Start Upload file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << END_OF_LINE;
 
 	auto res = __FileUpload();
 
 	COUT_EMPTY_LINE;
-	COUT_INFO << "Upload File res:[" << res << "]" << std::endl;
+	COUT_INFO << "Upload File res:[" << res << "]" << END_OF_LINE;
 }
 
 int64_t hasUpedSize;
@@ -92,7 +79,7 @@ int32_t CurlUploadFile::__FileUpload()
 			myres = MYRESULT::UPLOAD_FILE_ERROR;
 			long dResponseCode = 0;
 			curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &dResponseCode);
-			COUT_ERROR << "Upload file failed, curl res:[" << res << "]" << std::endl;
+			COUT_ERROR << "Upload file failed, curl res:[" << res << "]" << END_OF_LINE;
 		}
 	}
 	else

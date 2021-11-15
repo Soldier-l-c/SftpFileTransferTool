@@ -8,6 +8,13 @@ public:
 	{
 	};
 
+	static size_t cb(char* d, size_t n, size_t l, void* p)
+	{
+		(void)d;
+		(void)p;
+		return n * l;
+	}
+
 	virtual void run() = 0;
 	virtual void init() final
 	{
@@ -17,7 +24,11 @@ public:
 				//curl init
 				curl_global_init(CURL_GLOBAL_ALL);
 				pcurl = curl_easy_init();
-				COUT_INFO << "curl easy init" << std::endl;
+				if (pcurl)
+				{
+					curl_easy_setopt(pcurl, CURLOPT_WRITEFUNCTION, cb); //ÆÁ±Îcurl¿ØÖÆÌ¨Êä³ö
+				}
+				COUT_INFO << "curl easy init" << END_OF_LINE;
 			});
 	};
 
@@ -30,7 +41,7 @@ public:
 				{
 					curl_easy_cleanup(pcurl);
 					pcurl = nullptr;
-					COUT_INFO << "curl easy cleanup" << std::endl;
+					COUT_INFO << "curl easy cleanup" << END_OF_LINE;
 				}
 			});
 	}

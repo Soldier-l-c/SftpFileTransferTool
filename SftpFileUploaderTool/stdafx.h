@@ -8,11 +8,14 @@
 
 #define HISTORY_FILE "sftp_history.his"
 
+#define LOG std::cout
+
 #define INFO_ 20
 #define ERROR_ 35
-#define COUT_INFO std::cout<<UtilBase::UtilTime::GetFormatTime()<<"  "<<INFO_ << "  "
-#define COUT_ERROR std::cout<<UtilBase::UtilTime::GetFormatTime()<<"  "<<ERROR_ << "  "
-#define COUT_EMPTY_LINE std::cout << std::endl;
+#define COUT_INFO LOG<<UtilBase::UtilTime::GetFormatTime()<<"  "<<INFO_ << "  "
+#define COUT_ERROR LOG<<UtilBase::UtilTime::GetFormatTime()<<"  "<<ERROR_ << "  "
+#define COUT_EMPTY_LINE LOG << std::endl;
+#define END_OF_LINE	std::endl;
 
 #include "Util.h"
 #include "ICurlBase.h"
