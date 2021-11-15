@@ -12,10 +12,12 @@ void CurlUploadFile::run()
 
 	COUT_INFO << "Start Upload file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << END_OF_LINE;
 
+	auto startTime = time(nullptr);
 	auto res = __FileUpload();
+	auto endTime = time(nullptr);
 
 	COUT_EMPTY_LINE;
-	COUT_INFO << "Upload File res:[" << res << "]" << END_OF_LINE;
+	COUT_INFO << "Upload File res:[" << res << "]"<< " Used time:[" << endTime - startTime << "s]" << END_OF_LINE;
 }
 
 int64_t hasUpedSize;
@@ -35,7 +37,6 @@ int32_t CurlUploadFile::__FileUpload()
 {
 	int32_t myres = 0;
 
-	CURL* curl = pcurl;
 	CURLcode res{ CURLE_OK };
 	std::string userPwd = m_strUser + ":" + m_strPassword;
 
@@ -61,6 +62,7 @@ int32_t CurlUploadFile::__FileUpload()
 		return MYRESULT::OPEN_FILE_ERROR;
 	}
 
+	CURL* curl = curl_easy_init();
 	if (curl) 
 	{
 		curl_easy_setopt(curl, CURLOPT_URL, (m_strAddress + "/" + m_strToFile).c_str());		//设置sftp的路径
@@ -89,5 +91,7 @@ int32_t CurlUploadFile::__FileUpload()
 
 	//关闭文件
 	fclose(pSendFile);
+	curl_easy_cleanup(curl);
+
 	return myres;
 }

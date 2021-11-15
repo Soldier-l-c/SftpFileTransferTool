@@ -77,11 +77,6 @@ protected:
 
 	virtual bool __CheckIsReday()
 	{
-		if (pcurl == nullptr)
-		{
-			COUT_ERROR << "pcurl is nullptr" << std::endl;
-			return false;
-		}
 		if (m_strAddress.empty())
 		{
 			COUT_ERROR << "m_strAddress is nullptr" << std::endl;

@@ -9,10 +9,12 @@ void CurlDownloadFile::run()
 
 	COUT_INFO << "Start Download file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << END_OF_LINE;
 
+	auto startTime = time(nullptr);
 	auto res = __FileDownload();
+	auto endTime = time(nullptr);
 
 	COUT_EMPTY_LINE;
-	COUT_INFO << "Download File res:[" << res << "]" << END_OF_LINE;
+	COUT_INFO << "Download File res:[" << res << "]"  << " Used time:[" << endTime-startTime  << "s]"<< END_OF_LINE;
 }
 
 
@@ -48,10 +50,8 @@ int32_t CurlDownloadFile::__FileDownload()
 	totalSized = 0;
 	hasDownedSize = 0;
 	int32_t myres = 0;
-	CURL* curl = pcurl;
 
 	_WriteDataToFileCbAtom atom;
-	atom.pUrl = curl;
 	atom.pThis = this;
 	atom.hFile = CreateFileA(m_strToFile.c_str(), GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, 0, NULL);
 	if (atom.hFile == INVALID_HANDLE_VALUE)
@@ -60,6 +60,8 @@ int32_t CurlDownloadFile::__FileDownload()
 		return -1;
 	}
 
+	CURL* curl = curl_easy_init();
+	atom.pUrl = curl;
 	if (curl)
 	{
 		curl_easy_setopt(curl, CURLOPT_URL, ServerIpPath.c_str());
@@ -87,6 +89,8 @@ int32_t CurlDownloadFile::__FileDownload()
 
 	if (atom.hFile)
 		CloseHandle(atom.hFile);
+
+	curl_easy_cleanup(curl);
 
 	return myres;
 }

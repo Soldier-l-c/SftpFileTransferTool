@@ -23,12 +23,7 @@ public:
 			{
 				//curl init
 				curl_global_init(CURL_GLOBAL_ALL);
-				pcurl = curl_easy_init();
-				if (pcurl)
-				{
-					curl_easy_setopt(pcurl, CURLOPT_WRITEFUNCTION, cb); //ÆÁ±Îcurl¿ØÖÆÌ¨Êä³ö
-				}
-				COUT_INFO << "curl easy init" << END_OF_LINE;
+				COUT_INFO << "curl global init" << END_OF_LINE;
 			});
 	};
 
@@ -37,14 +32,8 @@ public:
 		static std::once_flag oc;
 		std::call_once(oc, [this]
 			{
-				if (pcurl)
-				{
-					curl_easy_cleanup(pcurl);
-					pcurl = nullptr;
-					COUT_INFO << "curl easy cleanup" << END_OF_LINE;
-				}
+				COUT_INFO << "curl cleanup" << END_OF_LINE;
 			});
 	}
 public:
-	static CURL* pcurl;
 };
