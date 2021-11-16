@@ -25,6 +25,14 @@ public:
 	virtual void SetPassword(const std::string& pwd) { m_strPassword = pwd; };
 	virtual void SetAddress(const std::string& add) { m_strAddress = add; };
 
+	virtual void run() override
+	{
+		__EnterFileTransfer();
+		__CinNeedInfo();
+		if (!__CheckIsReday())return;
+		__FileTrans();
+	}
+
 public:
 	static void PrintProgress(const int64_t& curentSize, const int64_t& totalSize)
 	{
@@ -49,6 +57,9 @@ public:
 	}
 
 protected:
+
+	virtual void __FileTrans() = 0;
+
 	virtual void __CinNeedInfo()
 	{
 		static const char* pre = "\x1b[1;32m";
@@ -139,11 +150,11 @@ protected:
 	virtual void __EnterFileTransfer()
 	{
 		linenoiseClearScreen();
-		std::cout << "*************************************************************" << std::endl;
-		std::cout << "Sftp File Uploader" << std::endl;
-		std::cout << "https://www.hkpyy.top" << std::endl;
-		std::cout << "*************************************************************" << std::endl;
-		std::cout << std::endl;
+		LOG << "*************************************************************" << END_OF_LINE;
+		LOG << "Sftp File "<< m_strTransType << END_OF_LINE;
+		LOG << "https://www.hkpyy.top" << END_OF_LINE;
+		LOG << "*************************************************************" << END_OF_LINE;
+		COUT_EMPTY_LINE;
 	}
 
 protected:

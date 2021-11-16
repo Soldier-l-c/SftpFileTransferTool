@@ -28,8 +28,9 @@ class CurlDownloadFile:public ICurlHandleFile
 {
 public:
 	virtual ~CurlDownloadFile() {}
-	virtual void run() override;
+	CurlDownloadFile();
 	static size_t CurlWiteDataToFileCallback(void* ptr, size_t size, size_t nmemb, void* stream);
 private:
+	virtual void __FileTrans() override;
 	int32_t __FileDownload();
 };

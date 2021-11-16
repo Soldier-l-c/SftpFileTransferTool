@@ -1,22 +1,6 @@
 #include "stdafx.h"
 #include "CurlDownloadFile.h"
 #include "Util.h"
-void CurlDownloadFile::run()
-{
-	m_strTransType = "Downloader";
-	__CinNeedInfo();
-	if (!__CheckIsReday())return;
-
-	COUT_INFO << "Start Download file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << END_OF_LINE;
-
-	auto startTime = time(nullptr);
-	auto res = __FileDownload();
-	auto endTime = time(nullptr);
-
-	COUT_EMPTY_LINE;
-	COUT_INFO << "Download File res:[" << res << "]"  << " Used time:[" << endTime-startTime  << "s]"<< END_OF_LINE;
-}
-
 
 int64_t hasDownedSize;
 double totalSized;
@@ -27,7 +11,7 @@ size_t CurlDownloadFile::CurlWiteDataToFileCallback(void* ptr, size_t size, size
 	auto getres = curl_easy_getinfo(pParam->pUrl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &totalSized); //获取要下载的文件大小
 
 	hasDownedSize += size * nmemb;
-	if(getres == CURLE_OK)ICurlHandleFile::PrintProgress(hasDownedSize, totalSized);
+	if (getres == CURLE_OK)ICurlHandleFile::PrintProgress(hasDownedSize, totalSized);
 
 	DWORD dwWrittenBytes = 0;
 	WriteFile(pParam->hFile, ptr, size * nmemb, &dwWrittenBytes, NULL);
@@ -35,11 +19,21 @@ size_t CurlDownloadFile::CurlWiteDataToFileCallback(void* ptr, size_t size, size
 	return dwWrittenBytes;
 }
 
+CurlDownloadFile::CurlDownloadFile()
+{
+	m_strTransType = "Downloader";
+}
 
-struct FtpFile {
-	const char* filename;
-	FILE* stream;
-};
+void CurlDownloadFile::__FileTrans()
+{
+	COUT_INFO << "Start Download file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << END_OF_LINE;
+
+	UtilBase::TimeConsum timec;
+	auto res = __FileDownload();
+
+	COUT_EMPTY_LINE;
+	COUT_INFO << "Download File res:[" << res << "]" << " Used time:[" << timec << "s]" << END_OF_LINE;
+}
 
 int32_t CurlDownloadFile::__FileDownload()
 {

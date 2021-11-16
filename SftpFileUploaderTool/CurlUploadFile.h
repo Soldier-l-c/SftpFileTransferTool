@@ -4,7 +4,8 @@ class CurlUploadFile :public ICurlHandleFile
 {
 public:
 	virtual ~CurlUploadFile() {}
-	virtual void run() override;
+	CurlUploadFile();
 protected:
+	virtual void __FileTrans() override;
 	int32_t __FileUpload();
 };

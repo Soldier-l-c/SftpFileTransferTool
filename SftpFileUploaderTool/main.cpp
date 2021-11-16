@@ -6,7 +6,6 @@ static const std::vector<std::string>examples{ "clear", "user", "password", "exi
 
 void completionHook(char const* prefix, linenoiseCompletions* lc) 
 {
-	size_t i;
 	COUT_EMPTY_LINE;
 	LOG << prefix << END_OF_LINE;
 	for (const auto& iter: examples)
@@ -79,7 +78,7 @@ void ProcessCmdline(const std::string& line)
 void Start()
 {
 	char* l = nullptr;
-	while ((l = linenoise("\x1b[1;32msftp_uploader\x1b[0m> ")) != NULL) 
+	while ((l = linenoise("\x1b[1;32msftp_transfer\x1b[0m> ")) != NULL) 
 	{
 		if (l[0] != '\0' && l[0] != '/') 
 		{

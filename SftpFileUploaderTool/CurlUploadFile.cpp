@@ -2,24 +2,6 @@
 #include "CurlUploadFile.h"
 #include "Util.h"
 
-void CurlUploadFile::run()
-{
-	m_strTransType = "Uploader";
-	__EnterFileTransfer();
-	__CinNeedInfo();
-
-	if (!__CheckIsReday())return;
-
-	COUT_INFO << "Start Upload file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << END_OF_LINE;
-
-	auto startTime = time(nullptr);
-	auto res = __FileUpload();
-	auto endTime = time(nullptr);
-
-	COUT_EMPTY_LINE;
-	COUT_INFO << "Upload File res:[" << res << "]"<< " Used time:[" << endTime - startTime << "s]" << END_OF_LINE;
-}
-
 int64_t hasUpedSize;
 int64_t totalSize;
 int read_callback(void* ptr, size_t size, size_t nmemb, void* stream)
@@ -32,6 +14,23 @@ int read_callback(void* ptr, size_t size, size_t nmemb, void* stream)
 	ICurlHandleFile::PrintProgress(hasUpedSize, totalSize);
 	return retcode;
 };
+
+CurlUploadFile::CurlUploadFile()
+{
+	m_strTransType = "Uploader";
+}
+
+void CurlUploadFile::__FileTrans()
+{
+	COUT_INFO << "Start Upload file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << END_OF_LINE;
+
+	auto startTime = time(nullptr);
+	auto res = __FileUpload();
+	auto endTime = time(nullptr);
+
+	COUT_EMPTY_LINE;
+	COUT_INFO << "Upload File res:[" << res << "]" << " Used time:[" << endTime - startTime << "s]" << END_OF_LINE;
+}
 
 int32_t CurlUploadFile::__FileUpload()
 {
