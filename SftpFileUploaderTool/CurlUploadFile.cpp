@@ -24,12 +24,11 @@ void CurlUploadFile::__FileTrans()
 {
 	COUT_INFO << "Start Upload file:[" << m_strFromFile << "] to: [" << m_strToFile << "]" << END_OF_LINE;
 
-	auto startTime = time(nullptr);
+	UtilBase::TimeConsum timec;
 	auto res = __FileUpload();
-	auto endTime = time(nullptr);
 
 	COUT_EMPTY_LINE;
-	COUT_INFO << "Upload File res:[" << res << "]" << " Used time:[" << endTime - startTime << "s]" << END_OF_LINE;
+	COUT_INFO << "Upload File res:[" << res << "]" << " Used time:[" << timec << "s]" << END_OF_LINE;
 }
 
 int32_t CurlUploadFile::__FileUpload()
