@@ -1,6 +1,8 @@
 #pragma once
 #include "ICurlBase.h"
 #include "3rd/linenoise/linenoise.h"
+
+#include <sstream>
 using MYRESULT = enum
 {
 	SECCESS = 0,
@@ -43,15 +45,15 @@ public:
 		auto precent = (int32_t)(100*prograss);
 		int32_t i = precent;
 
-		if (lastPercent != 0 && (precent == lastPercent))return;
+		std::stringstream strstr;
 
-		LOG <<"\33[2K\r";
-
-		LOG << "Prograss:[";
-		while (i-- > 0)LOG << ">";
+		strstr << "Progress:[";
+		while (i-- > 0)strstr << ">";
 		i = 100 - precent;
-		while (i-- > 0)LOG << " ";
-		LOG << "] " << precent << "%100";
+		while (i-- > 0)strstr << " ";
+		strstr << "] " << precent << "%100 \r";
+
+		LOG << strstr.str() << std::flush;
 
 		lastPercent = precent;
 	}

@@ -68,6 +68,9 @@
     <ClInclude Include="CurlUploadFile.h">
       <Filter>Curl</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="CurlDownloadFile.h">

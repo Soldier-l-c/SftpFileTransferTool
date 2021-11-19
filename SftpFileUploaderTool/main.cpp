@@ -2,6 +2,7 @@
 #include "./3rd/linenoise/linenoise.h"
 #include "CurlUploadFile.h"
 #include "CurlDownloadFile.h"
+#include "ThreadPool.h"
 static const std::vector<std::string>examples{ "clear", "user", "password", "exit" , "hostname"};
 
 void completionHook(char const* prefix, linenoiseCompletions* lc) 
@@ -34,7 +35,7 @@ void InitLinenoise()
 	linenoiseSetCompletionCallback(completionHook);
 }
 
-void TransferTest(std::shared_ptr<ICurlHandleFile>&& sptr)
+int TransferTest(std::shared_ptr<ICurlHandleFile> sptr)
 {
 	sptr->init();
 	sptr->run();

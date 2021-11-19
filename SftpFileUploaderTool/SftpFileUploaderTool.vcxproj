@@ -167,6 +167,7 @@
     <ClInclude Include="ICurlBase.h" />
     <ClInclude Include="ICurlHandleFile.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
