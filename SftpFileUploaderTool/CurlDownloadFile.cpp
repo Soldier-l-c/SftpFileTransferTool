@@ -8,7 +8,7 @@ size_t CurlDownloadFile::CurlWiteDataToFileCallback(void* ptr, size_t size, size
 {
 	_WriteDataToFileCbAtom* pParam = (_WriteDataToFileCbAtom*)stream;
 
-	auto getres = curl_easy_getinfo(pParam->pUrl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &totalSized); //»ñÈ¡ÒªÏÂÔØµÄÎÄ¼ş´óĞ¡
+	auto getres = curl_easy_getinfo(pParam->pUrl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &totalSized); //è·å–è¦ä¸‹è½½çš„æ–‡ä»¶å¤§å°
 
 	hasDownedSize += size * nmemb;
 	if (getres == CURLE_OK)ICurlHandleFile::PrintProgress(hasDownedSize, totalSized);
@@ -38,7 +38,7 @@ void CurlDownloadFile::__FileTrans()
 int32_t CurlDownloadFile::__FileDownload()
 {
 	CURLcode res;
-	auto urlkey = m_strUser + ":" + m_strPassword; //·şÎñÆ÷ÓÃ»§Ãû¼°ÃÜÂë
+	auto urlkey = m_strUser + ":" + m_strPassword; //æœåŠ¡å™¨ç”¨æˆ·ååŠå¯†ç 
 	auto ServerIpPath = m_strAddress + "/" + m_strFromFile;
 
 	totalSized = 0;

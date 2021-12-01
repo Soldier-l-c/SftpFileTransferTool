@@ -4,7 +4,7 @@
 
 int64_t hasUpedSize;
 int64_t totalSize;
-int read_callback(void* ptr, size_t size, size_t nmemb, void* stream)
+int CurlUploadFile::ReadCallback(void* ptr, size_t size, size_t nmemb, void* stream)
 {
 	curl_off_t nread;
 	size_t retcode = fread(ptr, size, nmemb, (FILE*)(stream));
@@ -38,7 +38,7 @@ int32_t CurlUploadFile::__FileUpload()
 	CURLcode res{ CURLE_OK };
 	std::string userPwd = m_strUser + ":" + m_strPassword;
 
-	//´ò¿ªËùĞèÉÏ´«µÄÎÄ¼ş
+	//æ‰“å¼€æ‰€éœ€ä¸Šä¼ çš„æ–‡ä»¶
 	FILE* pSendFile = nullptr;
 	struct stat file_info;
 	curl_off_t iFileSize;
@@ -48,12 +48,12 @@ int32_t CurlUploadFile::__FileUpload()
 		return MYRESULT::OPEN_FILE_ERROR;
 	}
 
-	iFileSize = (curl_off_t)file_info.st_size;   //»ñÈ¡ÎÄ¼ş´óĞ¡
+	iFileSize = (curl_off_t)file_info.st_size;   //è·å–æ–‡ä»¶å¤§å°
 
-	totalSize = iFileSize; //ÎÄ¼ş×Ü´óĞ¡
+	totalSize = iFileSize; //æ–‡ä»¶æ€»å¤§å°
 	hasUpedSize = 0;
 
-	fopen_s(&pSendFile, m_strFromFile.c_str(), "rb"); //´ò¿ªÎÄ¼ş
+	fopen_s(&pSendFile, m_strFromFile.c_str(), "rb"); //æ‰“å¼€æ–‡ä»¶
 
 	if (nullptr == pSendFile)
 	{
@@ -63,16 +63,16 @@ int32_t CurlUploadFile::__FileUpload()
 	CURL* curl = curl_easy_init();
 	if (curl) 
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, (m_strAddress + "/" + m_strToFile).c_str());		//ÉèÖÃsftpµÄÂ·¾¶
-		curl_easy_setopt(curl, CURLOPT_USERPWD, userPwd.c_str());	//ÉèÖÃÓÃ»§ÃûºÍÃÜÂë	
-		curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);//ÉèÖÃ»Øµ÷º¯Êı
-		curl_easy_setopt(curl, CURLOPT_READDATA, pSendFile);		//ÉèÖÃÒªÉÏ´«ÎÄ¼şµÄÖ¸Õë
-		curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, 1); //Ñ¡ÔñÊÇ·ñÔÚÔ¶³ÌÎÄ¼ş¼Ğ²»´æÔÚÊ±´´½¨£¬1Îª´´½¨
-		curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);                 //ÉÏ´«
-		curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, iFileSize);//ÉèÖÃÎÄ¼ş´óĞ¡
+		curl_easy_setopt(curl, CURLOPT_URL, (m_strAddress + "/" + m_strToFile).c_str());		//è®¾ç½®sftpçš„è·¯å¾„
+		curl_easy_setopt(curl, CURLOPT_USERPWD, userPwd.c_str());	//è®¾ç½®ç”¨æˆ·åå’Œå¯†ç 	
+		curl_easy_setopt(curl, CURLOPT_READFUNCTION, ReadCallback);//è®¾ç½®å›è°ƒå‡½æ•°
+		curl_easy_setopt(curl, CURLOPT_READDATA, pSendFile);		//è®¾ç½®è¦ä¸Šä¼ æ–‡ä»¶çš„æŒ‡é’ˆ
+		curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, 1); //é€‰æ‹©æ˜¯å¦åœ¨è¿œç¨‹æ–‡ä»¶å¤¹ä¸å­˜åœ¨æ—¶åˆ›å»ºï¼Œ1ä¸ºåˆ›å»º
+		curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);                 //ä¸Šä¼ 
+		curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, iFileSize);//è®¾ç½®æ–‡ä»¶å¤§å°
 		curl_easy_setopt(curl, CURLOPT_FTP_RESPONSE_TIMEOUT, 120);
 
-		//»ñÈ¡curlµÄÖ´ĞĞ½á¹û
+		//è·å–curlçš„æ‰§è¡Œç»“æœ
 		res = curl_easy_perform(curl);
 		if (CURLE_OK != res)
 		{
@@ -87,7 +87,7 @@ int32_t CurlUploadFile::__FileUpload()
 		myres = MYRESULT::UPLOAD_FILE_ERROR;
 	}
 
-	//¹Ø±ÕÎÄ¼ş
+	//å…³é—­æ–‡ä»¶
 	fclose(pSendFile);
 	curl_easy_cleanup(curl);
 
